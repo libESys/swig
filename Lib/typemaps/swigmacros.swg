@@ -140,7 +140,13 @@ nocppval
 #define %as_voidptrptr(a)            SWIG_as_voidptrptr(a)
 
 %insert("header") {
-%define_as(SWIG_as_voidptr(a),    %const_cast(%static_cast(a,const void *), void *))
+//%define_as(SWIG_as_voidptr(a),    %const_cast(%static_cast(a,const void *), void *))
+template<typename T>
+inline void *SWIG_as_voidptr(T *a)
+{
+    return const_cast< void * >(static_cast< const void * >(a));
+}
+
 %define_as(SWIG_as_voidptrptr(a), ((void)%as_voidptr(*a),%reinterpret_cast(a, void**)))
 }
 
